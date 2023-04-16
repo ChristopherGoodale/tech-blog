@@ -8,22 +8,28 @@ router.get("/", async (req, res) => {
     res.json(err);
   });
   const posts = postData.map((post) => post.get({ plain: true }));
-  res.render("all", { posts, loggedIn: req.session.loggedIn });
+  console.log(req.session);
+  if (req.session) {
+    res.render("all", { posts, loggedIn: req.session.loggedIn });
+  } else {
+    res.render("login", { loggedIn: false });
+  }
 });
 
 // route to login page
 router.get("/login", (req, res) => {
-  if (req.session.In) {
-    res.redirect("/");
-    return;
-  }
+  // if (req.session.In) {
+  //   res.redirect("/");
+  //   return;
+  // } else {
+  res.render("login", { loggedIn: false, user_id: "" })
+  //  }
 
-  res.render("login", { loggedIn: req.session.loggedIn, user_id: req.session.user_id });
 });
 
 // route to SIGNUP page
 router.get("/signup", (req, res) => {
-  res.render("signup", { loggedIn: req.session.loggedIn, user_id: req.session.user_id });
+  res.render("signup", { loggedIn: false, user_id: null });
 });
 
 // route to DASHBOARD page
